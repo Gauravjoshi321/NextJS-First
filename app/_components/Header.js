@@ -1,13 +1,45 @@
 import Logo from "./Logo";
-import Navigation from "./Navigation";
+import Link from "next/link";
+import { auth } from "../_lib/auth";
 
+async function Header() {
+  const session = await auth();
 
-function Header() {
   return (
     <header className='border-b border-primary-900 px-8 py-5'>
       <div className='flex justify-between items-center max-w-7xl mx-auto'>
         <Logo />
-        <Navigation />
+        <nav className="z-10 text-xl">
+          <ul className="flex gap-16 items-center">
+            <li>
+              <Link href="/cabins" className="hover:text-accent-400 transition-colors">
+                Cabins
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="hover:text-accent-400 transition-colors">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/account"
+                className="hover:text-accent-400 transition-colors flex items-center gap-3"
+              >
+                {
+                  session?.user &&
+                  <img
+                    src={session.user.image}
+                    className="h-8 rounded-full"
+                    alt={session.user.name}
+                    referrerPolicy="no-referrer"
+                  />
+                }
+                <span>Guest area</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );
